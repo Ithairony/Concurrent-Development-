@@ -1,0 +1,60 @@
+package griffith;
+
+import java.util.Random;
+
+public class CoinTossing extends Thread{
+	
+	
+	// Heads = 0 || Tails = 1
+
+		// Initializing counting variables 
+		int headsCount = 0;
+		int tailsCount = 0;
+		int tossNumber;    
+
+	    // Constructor
+	    CoinTossing(int tossNumber) {
+	        this.tossNumber = tossNumber;
+	    }
+	    
+	    @Override
+		public void run() {
+
+	        Random random = new Random(); 
+
+	        // Generating a random binary and computing if its heads or tails 
+		    for(int i = 1; i <= tossNumber; i++) {
+	        
+	            int randomValue = random.nextInt(2); // random number betweeen 0 and 1
+
+	            if(randomValue == 0 ) {
+	                headsCount++;
+	            }   else {
+	                tailsCount++;
+	            }
+		    }
+
+	        double frequencyOfHeads = (headsCount / (double) tossNumber) * 100;
+	        double frequencyOfTails = (tailsCount / (double) tossNumber) * 100;
+
+	        System.out.println("Heads: " + headsCount + " - " + frequencyOfHeads + "%");
+	        System.out.println("Tails: " + tailsCount + " - " + frequencyOfTails + "%");
+		}
+	    
+	public static void main(String[] args) {
+		 // Defining tossing number
+        tossNumber = 1000;
+        
+		Thread threadOne =  new CoinTosing(tossNumber);
+        threadOne.start();
+
+        try {
+            threadOne.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+	}
+
+}
