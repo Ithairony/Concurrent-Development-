@@ -36,7 +36,7 @@ public class CoinTossing extends Thread{
 
 	        double frequencyOfHeads = (headsCount / (double) tossNumber) * 100;
 	        double frequencyOfTails = (tailsCount / (double) tossNumber) * 100;
-	        																// Round to two decimals 
+
 	        System.out.println("Heads: " + headsCount + " - " + String.format("%.2f", frequencyOfHeads) + "%");
 	        System.out.println("Tails: " + tailsCount + " - " + String.format("%.2f", frequencyOfTails) + "%");
 		}
