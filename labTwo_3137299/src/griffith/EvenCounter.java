@@ -1,12 +1,21 @@
 package griffith;
 
-public class EvenCounter {
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class EvenCounter implements Callable<Integer>{
 
 	public static void main(String[] args) {
 
 		int n = 1000000;
 		int nThreads = Runtime.getRuntime().availableProcessors();
 		int index[] = new int[nThreads + 1];
+		
+		
+		// Creating a threadpool
+		ExecutorService pool = Executors.newFixedThreadPool(nThreads);
+		System.out.println(pool); // Checking if it was created
 
 		for (int j = 0; j <= nThreads; j++) {
 			index[j] = (j*n) / nThreads;
@@ -46,5 +55,11 @@ public class EvenCounter {
 		System.out.println("Running time (ms): " + runningTime);
 		System.out.println("Seconds: " + (runningTime / 1000.0));
 
+	}
+	// Call method implemented by the Callable interface 
+	@Override
+	public Integer call() throws Exception {
+		
+		return null;
 	}
 }
