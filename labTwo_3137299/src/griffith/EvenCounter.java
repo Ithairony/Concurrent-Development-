@@ -2,6 +2,7 @@ package griffith;
 
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -36,10 +37,24 @@ public class EvenCounter {
 			Search searchTask = new Search(data, index[i], index[i+1]);
 			future.add(pool.submit(searchTask));
 		}
-
+		
 		System.out.println("Threadpool details " + pool); // Checking if pool was created
-
-		// This bit is being replaced by the callable interface applied already in Search
+		
+		int freq = 0;
+		int highestValue = 0;
+		
+		try {
+			for (Future<int[]> f : future) {
+				int[] result = f.get();
+				freq += result[0];
+				if (result[1] > highestValue) {
+					highestValue = result[1];
+				}
+			}
+		}	catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		// This bit is being replaced by the callable interface applied already in Search class
 
 		// Thread[] workers	 = new Thread[nThreads];
 		//		for (int j = 0; j <nThreads; j++) {
@@ -67,8 +82,8 @@ public class EvenCounter {
 		long endTime =  System.currentTimeMillis();
 		long runningTime = endTime - startTime;
 
-		//		System.out.println("Even frequency: " + freq);
-		//		System.out.println("Highest value is : " + highestValue);
+		System.out.println("Even frequency: " + freq);
+		System.out.println("Highest value is : " + highestValue);
 		System.out.println("Running time (ms): " + runningTime);
 		System.out.println("Seconds: " + (runningTime / 1000.0));
 
