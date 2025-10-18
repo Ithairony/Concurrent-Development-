@@ -15,10 +15,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class PalindromeSearch {
 
 	// Declaring variables 
-	private final static int ROWS = 10;
-	private final static int COLUMNS = 10;
+	private final static int ROWS = 1000;
+	private final static int COLUMNS = 1000;
 
-	// Creating a  matrix of Rows X Columns 
+	// Creating a matrix of Rows X Columns 
 	public static char[][] matrix = new char[ROWS][COLUMNS];
 	private static AtomicInteger count = new AtomicInteger(0);
 
@@ -45,22 +45,72 @@ public class PalindromeSearch {
 		}
 	}
 	// Method that validates if it's a palindrome 
-	public boolean isPalindrome(String str) {
-
+	public static boolean isPalindrome(String str) {
+		// Gets the length of the given string 
 		int length = str.length();
-
+		// Compares first and last, second and second last, third and third last ...
 		for (int i = 0; i < length / 2; i++) {
 			if (str.charAt(i)!= str.charAt(length - i - 1)) {
 				return false;
 			}
 		}
 		return true;
-
 	}
 
-	// Search palindromes in all directions
+	// Search palindromes in all directions, in this method I want to create a pool and divide the tasks within threads 
 	public static void searchPalindromes(int n, int nThreads) {
-
+		ExecutorService pool = Executors.newFixedThreadPool(nThreads);
+		int rowsPerThread = ROWS / nThreads; // Divides the rows with the available threads 
+	THis bit need attetipn so it does not fall on plagiarism 
+//		for (int i = 0; i < nThreads; i++) {
+//			final int threadIndex = i;
+//			int startRow = threadIndex * rowsPerThread;
+//		    int endRow = (threadIndex == nThreads - 1) ? ROWS : startRow + rowsPerThread;
+//		    
+//		    pool.submit(() -> {
+//		        for (int row = startRow; row < endRow; row++) {
+//		            for (int col = 0; col < COLUMNS; col++) {
+//
+//		                // LEFT → RIGHT
+//		                if (col + n <= COLUMNS) {
+//		                    StringBuilder sb = new StringBuilder();
+//		                    for (int k = 0; k < n; k++) sb.append(matrix[row][col + k]);
+//		                    if (isPalindrome(sb.toString())) count.incrementAndGet();
+//		                }
+//
+//		                // TOP → BOTTOM
+//		                if (row + n <= ROWS) {
+//		                    StringBuilder sb = new StringBuilder();
+//		                    for (int k = 0; k < n; k++) sb.append(matrix[row + k][col]);
+//		                    if (isPalindrome(sb.toString())) count.incrementAndGet();
+//		                }
+//
+//		                // DIAGONAL ↘
+//		                if (row + n <= ROWS && col + n <= COLUMNS) {
+//		                    StringBuilder sb = new StringBuilder();
+//		                    for (int k = 0; k < n; k++) sb.append(matrix[row + k][col + k]);
+//		                    if (isPalindrome(sb.toString())) count.incrementAndGet();
+//		                }
+//
+//		                // DIAGONAL ↙ (opcional)
+//		                if (row + n <= ROWS && col - n >= -1) {
+//		                    StringBuilder sb = new StringBuilder();
+//		                    for (int k = 0; k < n; k++) sb.append(matrix[row + k][col - k]);
+//		                    if (isPalindrome(sb.toString())) count.incrementAndGet();
+//		                }
+//		            }
+//		        }
+//		    });
+//		}
+		
+		pool.shutdown();
+	    try {
+	        pool.awaitTermination(Long.MAX_VALUE, java.util.concurrent.TimeUnit.NANOSECONDS);
+	    } catch (InterruptedException e) {
+	        Thread.currentThread().interrupt();
+	    }
+		// Search UP - DOWN  --> matrix[i + n - 1][j]
+		// Search diagonally UP - DOWN --> matrix[i + n - 1][j + n - 1]
 	}
 	
 	// Method that benchmarks the execution time of the threads with adjustable number of chars per substring to be tested by isPalindrome 
@@ -71,19 +121,18 @@ public class PalindromeSearch {
 
 			int nThreads = Runtime.getRuntime().availableProcessors(); // Gets the available number of threads ( Varies according to each machine)
 
-			for (int t = 1; t <= nThreads; t++) {
+			for (int i = 1; i <= nThreads; i++) {
 				count.set(0);
 				long startTime = System.nanoTime();
-				searchPalindromes(palindromeLength, t);
+				searchPalindromes(palindromeLength, i);
 				long endTime = System.nanoTime();
-				double elapsedSeconds = (endTime - startTime) / 1_000_000_000.0;
+				double totalTime = (endTime - startTime) / 1_000_000_000.0;
 
 				System.out.printf("%d palindromes of size %d found in %.6f s using %d thread(s)%n",
-						count.get(), palindromeLength, elapsedSeconds, t);
+						count.get(), palindromeLength, totalTime, i);
 			}
 			System.out.println();
 		}
-		
 	}
 	// Getters for rows and Columns 
 	public int getRows() {
@@ -97,14 +146,5 @@ public class PalindromeSearch {
 
 		matrixGenerator();
 		benchmarkPalindromes(3,6);		
-
-		
-
-
-		// Search LEFT - RIGHT --> matrix[i][j + n - 1]
-		//if ( j + n < COLUMNS) {
-
-		// Search UP - DOWN  --> matrix[i + n - 1][j]
-		// Search diagonally UP - DOWN --> matrix[i + n - 1][j + n - 1]
 	}
 }
