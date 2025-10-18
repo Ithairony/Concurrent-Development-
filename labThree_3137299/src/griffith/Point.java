@@ -24,6 +24,9 @@ public final class Point{
 	public String toString(){
 		return "("+x+","+y+")";
 	}
+	public int hashCode() {
+		return hashCode();
+	}
 
 	public boolean equals(Object ob){
 		if(!(ob instanceof Point)) return false;
