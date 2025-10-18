@@ -9,6 +9,7 @@ package griffith;
 import java.util.*;
 
 class CollectionPoint{
+	
 	List<Point> list = new ArrayList<>();
 
 	public void add(Point p){
