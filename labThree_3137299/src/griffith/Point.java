@@ -13,11 +13,11 @@ public final class Point{
 		x = x0; y = y0;
 	}
 	
- 	public int x(){
+ 	public int getX(){
  		return x;
  	}
  	
-	public int y(){
+	public int getY(){
 		return y;
 	}
 	
