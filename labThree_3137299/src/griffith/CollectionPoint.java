@@ -1,5 +1,5 @@
 /**
- * Point.java
+ * 
  *
  * Student Name: Igor Thairony Oliveira Martins
  * Student Number: 3137299
