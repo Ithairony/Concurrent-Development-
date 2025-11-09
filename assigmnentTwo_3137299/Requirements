@@ -1,0 +1,30 @@
+Requirements 
+
+
+	Students :
+		must wait to enter the clasroom if there is a lecture in progress
+		enter() and leave()
+		
+		
+	Lecturer :
+		When the lectures is in the classroom no one has permission to either enter or leave
+		Once all the students check in the lecture can startLecture()
+		enter() , leave() , and startLecture() 
+		Hints: Lecturer can use a binary semaphore to access classroom so one lecturer in class at any
+		time students and visitors can use counted semaphores to access classroom. You can use
+		locks, barriers, semaphores.
+		
+		Lecturer example: 
+		`	{Osama, Barry, Faheem, Alex, Aqeel, Waseem}
+		
+	Visitors:
+		enter() and leave() 
+		alwasys less then 5 visitors
+		
+		
+	Classroom :
+	 	may have only one lecturer at any time
+	 	its capacity should not exceed limit 
+		
+		classroom example : 
+			{W201 (capacity 60), W202(capacity 60), W101 (Capacity 20), JS101 Capacity (30)}
