@@ -10,20 +10,21 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Classroom {
 	
-	// Declaring class properties 
+	// Declaring Classroom properties 
 	String name;
-	private int capacity ;
-	Lecturer lecturer = null;
-	boolean inSession = false;
-	int students = 0;
-	int visitors = 0;
+	private int capacity ;	// Declares class capacity ( Students + visitor should not exceed its capacity) 
+	Lecturer lecturer = null;	// Each classroom should have a Lecturer assigned to it 
+	boolean inSession = false;	// If a class is taking place this variable should be set to true
+	int students = 0;	// keeps track of the number of active students in the classroom	
+	int visitors = 0;	// keeps track of the number of active visitor in the classroom	
 	
 	
 	// Synchronization 
 	public final Semaphore capacitySemaphore;
 	public final Semaphore lecturerSemaphore = new Semaphore(1); // Allows only 1 teacher at a time for each classroom
-	public final ReentrantLock lock = new ReentrantLock();
+	public final ReentrantLock lock = new ReentrantLock();	// Declares a lock 
 	
+	// Constructor 
 	public Classroom(String name , int capacity) {
 		this.name = name;
 		this.capacity = capacity;
