@@ -44,7 +44,7 @@ public class Visitor extends Thread {
 		classroom.lock.lock();
 		try {
 			classroom.visitors--;	// decrements the visitors count
-			System.out.println("Visitor " + name + " left " + classroom.name);
+			System.out.println(name + " left " + classroom.name);
 			classroom.capacitySemaphore.release();
 		} finally {
 			classroom.lock.unlock();

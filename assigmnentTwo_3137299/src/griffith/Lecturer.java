@@ -41,6 +41,7 @@ public class Lecturer extends Thread {
 		}
 		assignedClassroom.lecturer = this;
 		System.out.println(name + " entered " + assignedClassroom.name);
+		 Thread.sleep(2000);		// Allows a time to students to enter class before it starts
 	}
 
 	public void startLecture() {

@@ -64,7 +64,7 @@ public class Student extends Thread {
 	        enter();
 	        // Stay until lecture ends
 	        while (classroom.inSession) {
-	            Thread.sleep(500);
+	            Thread.sleep(100);
 	        }
 	        leave();
 	    } catch (InterruptedException e) {
