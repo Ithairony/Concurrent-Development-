@@ -22,10 +22,15 @@ public class Student extends Thread {
 
 	public void enter() {
 		try {
-			// Wait for the classroom to have an ongoing session
-			classroom.capacitySemaphore.acquire(); 
+			// Wait for available space in the classroom
+			classroom.capacitySemaphore.acquire(); // Uses the counting semaphore to keep track of classroom capacity 
 			classroom.lock.lock();
 			try {
+				// Check if class is still happening 
+				if (!classroom.inSession) {
+					classroom.capacitySemaphore.release();
+					return;
+				}
 				classroom.students++;
 				System.out.println(name + " entered " + classroom.name);
 			} finally {
@@ -55,6 +60,7 @@ public class Student extends Thread {
 	        while (!classroom.inSession) {
 	            Thread.sleep(200);
 	        }
+	        // Once classroom has started, student enter the room 
 	        enter();
 	        // Stay until lecture ends
 	        while (classroom.inSession) {
