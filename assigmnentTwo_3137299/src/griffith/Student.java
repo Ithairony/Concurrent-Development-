@@ -32,7 +32,7 @@ public class Student extends Thread {
 					return;
 				}
 				classroom.students++;
-				System.out.println(name + " entered " + classroom.name);
+				//System.out.println(name + " entered " + classroom.name);
 			} finally {
 				classroom.lock.unlock();
 			}
@@ -43,33 +43,44 @@ public class Student extends Thread {
 
 
 	public void leave() {
-	    classroom.lock.lock();
-	    try {
-	        classroom.students--;
-	        System.out.println(name + " left " + classroom.name);
-	        classroom.capacitySemaphore.release();
-	    } finally {
-	        classroom.lock.unlock();
-	    }
+		classroom.lock.lock();
+		try {
+			if (classroom.students > 0) {
+				classroom.students--;
+			}
+			//System.out.println(name + " left " + classroom.name);
+			classroom.capacitySemaphore.release();
+		} finally {
+			classroom.lock.unlock();
+		}
 	}
 
 	@Override
 	public void run() {
-	    try {
-	        // Wait until lecture starts
-	        while (!classroom.inSession) {
-	            Thread.sleep(200);
-	        }
-	        // Once classroom has started, student enter the room 
-	        enter();
-	        // Stay until lecture ends
-	        while (classroom.inSession) {
-	            Thread.sleep(100);
-	        }
-	        leave();
-	    } catch (InterruptedException e) {
-	        Thread.currentThread().interrupt();
-	    }
+		try {
+			while (true) { // Loop forever to attend multiple lectures
+
+				// Wait until lecture starts
+				while (!classroom.inSession) {
+					Thread.sleep(200);
+				}
+
+				// Wait for available space and enter
+				enter();
+
+				// Stay until lecture ends
+				while (classroom.inSession) {
+					Thread.sleep(100);
+				}
+
+				leave();
+
+				// Take a break before the next lecture attempt
+				Thread.sleep(200);
+			}
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
 	}
 
 	// Getters and Setters

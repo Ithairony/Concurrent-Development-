@@ -7,6 +7,7 @@ package griffith;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Monitor extends Thread {
 
@@ -62,23 +63,26 @@ public class Monitor extends Thread {
 	}
 
 	public static void main (String[] args) {
+
 		// Creates a list of classrooms
 		List<Classroom> classroomList = new ArrayList<>();
-		classroomList.add(new Classroom("W201", 40));
-		classroomList.add(new Classroom("W202", 40));
-		classroomList.add(new Classroom("JS101", 30));
-		classroomList.add(new Classroom("W101", 20));
+		classroomList.add(new Classroom("W201", 60));
+		classroomList.add(new Classroom("W202", 60));
+		classroomList.add(new Classroom("JS101", 40));
+		classroomList.add(new Classroom("W101", 50));
 
-		// Creates a list of lecturers 
-		List<Lecturer> lecturerList = new ArrayList<>();
-		lecturerList.add(new Lecturer("Osama", classroomList.get(0)));
-		lecturerList.add(new Lecturer("Barry", classroomList.get(1)));
-		lecturerList.add(new Lecturer("Thamas", classroomList.get(2)));
-		lecturerList.add(new Lecturer("Ellen", classroomList.get(3)));
+		// Creates a list of lecturers
+		String[] lecturerNames = {"Osama", "Barry", "Tracey", "Gemma", "Thamas", "Ellen"};
+		List<Lecturer> lecturers = new ArrayList<>();;
+		//Random random = new Random();
 		
-		// Start lecturers
-		for (Lecturer l : lecturerList) {
-		    l.start();
+		Lecturer.setClassrooms(classroomList);
+		
+		for (int i = 0; i < lecturerNames.length; i++) {
+		    Classroom classroom = classroomList.get(i % classroomList.size());
+		    Lecturer lecturer = new Lecturer(lecturerNames[i], classroom);
+		    lecturers.add(lecturer);
+		    lecturer.start();
 		}
 
 

@@ -26,12 +26,12 @@ public class Visitor extends Thread {
 			classroom.lock.lock();
 			try {
 				// Check if class is happening 
-				if (classroom.inSession) {
+				if (!classroom.inSession) {
 					classroom.capacitySemaphore.release();
 					return;
 				}
 				classroom.visitors++; // increments the visitors count 
-				System.out.println(name + " entered " + classroom.name);
+				// System.out.println(name + " entered " + classroom.name);
 			} finally {
 				classroom.lock.unlock();
 			}
@@ -43,8 +43,10 @@ public class Visitor extends Thread {
 	public void leave() {
 		classroom.lock.lock();
 		try {
-			classroom.visitors--;	// decrements the visitors count
-			System.out.println(name + " left " + classroom.name);
+			if (classroom.students > 0) {
+				classroom.visitors--;	// decrements the visitors count
+			}
+			// System.out.println(name + " left " + classroom.name);
 			classroom.capacitySemaphore.release();
 		} finally {
 			classroom.lock.unlock();
@@ -54,21 +56,24 @@ public class Visitor extends Thread {
 	@Override
 	public void run() {
 		try {
+			while (true) { // Loop forever to attend multiple lectures
 
-			// Only enter if no lecture is in session
-			while (classroom.inSession) {
-				Thread.sleep(200); // wait until class is over
-			}
+				// Wait until lecture starts
+				while (!classroom.inSession) {
+					Thread.sleep(200);
+				}
 
-			// Visitor enters the room 
-			enter();
-			
-			// If there is a lecture going on it waits till it ends 
-			if (classroom.inSession) {
-				Thread.sleep(500);
-				return; 
+				// Wait for available space and enter
+				enter();
+
+				// Stay until lecture ends
+				while (classroom.inSession) {
+					Thread.sleep(100);
+				}
+
+				leave();
+
 			}
-			leave();
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
