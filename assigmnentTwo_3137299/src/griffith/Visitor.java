@@ -70,7 +70,7 @@ public class Visitor extends Thread {
 				while (classroom.inSession) {
 					Thread.sleep(100);
 				}
-
+				// leave the classroom
 				leave();
 
 			}

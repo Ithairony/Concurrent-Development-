@@ -29,11 +29,10 @@ public class Classroom {
 		this.name = name;
 		this.capacity = capacity; 
 
-		// Initialize semaphores *after* capacity is known
+		// Initialize semaphores after capacity of classroom is known, at some point I was adding it before and it would not recognize 
 		this.capacitySemaphore  =  new Semaphore(capacity);
 		this.lecturerSemaphore  =   new Semaphore(1);
 	}
-
 
 	// Getters and Setters
 	public int getCapacity() {
