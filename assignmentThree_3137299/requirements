@@ -1,0 +1,24 @@
+Requirements 	
+	
+	# Notes
+		1. No log on/off required for users. 
+		2. For this assignment you should add approximately 15 cars to the system. 
+		3. Server should use thread pool and semaphores to limit users to 50 
+		4. All requests to server must be objects, either a car or request 
+		5. Cars added on server must be thread safe as many clients have conflicting requests 
+		
+	
+	# Clients 
+		- Add a new car to the server 
+		- Sell a car 
+		- Request information about a care from the server	
+			- list of cars for sale 
+			- List of cars of a given make
+			- Show total values of all sales
+			
+	# Cars 
+		registration
+		make
+		price
+		mileage
+		forSale 
